@@ -12,6 +12,7 @@ class Template extends MX_Controller {
     }
 	
     function admin($data){
+       // Modules::run('secure_tings/ni_admin');
         $this->load->view('admin_view',$data);
     }
 	

@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Welcome extends MX_Controller {
+class Welcome extends CI_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -19,11 +19,7 @@ class Welcome extends MX_Controller {
 	 */
 	public function index()
 	{
-		$this->load->helper("form");
-		$data['module']="welcome";
-		$data['view_file']="test";
-		echo Modules::run('template/admin', $data);
-		//$this->load->view('welcome_message');
+		$this->load->view('welcome_message');
 	}
 }
 

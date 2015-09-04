@@ -1,19 +1,23 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 
-class Mdl_perfectmodel extends CI_Model {
+class Mdl_county extends CI_Model {
 
 function __construct() {
 parent::__construct();
 }
 
 function get_table() {
-    $table = "tablename";
+    $table = "m_county";
     return $table;
 }
 
 
-
+function getRegion(){
+		$this->db->select('region_name');
+		$query = $this->db->get("m_region");
+		return $query->result();
+    }
 
 function get($order_by){
 $table = $this->get_table();

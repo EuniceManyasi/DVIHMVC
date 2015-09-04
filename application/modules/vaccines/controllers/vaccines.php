@@ -1,147 +1,177 @@
 <?php
 class Vaccines extends MX_Controller 
 {
+
 function __construct() {
 parent::__construct();
 }
 
+public function index()
+	{
+            $this->load->model('mdl_vaccines');
+            $this->load->library('pagination');
+            $this->load->library('table');
+            $config['base_url'] = base_url().'/vaccines/index';
+            $config['total_rows'] = $this->mdl_vaccines->get('id')->num_rows;
+            $config['per_page'] = 5;
+            $config['num_links'] = 4;
+            $config['full_tag_open'] = '<div><ul class="pagination pagination-small pagination-centered">';
+            $config['full_tag_close'] = '</ul></div>';
+            $config['num_tag_open'] = '<li>';
+            $config['num_tag_close'] = '</li>';
+            $config['cur_tag_open'] = "<li class='disabled'><li class='active'><a href='#'>";
+            $config['cur_tag_close'] = "<span class='sr-only'></span></a></li>";
+            $config['next_tag_open'] = "<li>";
+            $config['next_tagl_close'] = "</li>";
+            $config['prev_tag_open'] = "<li>";
+            $config['prev_tagl_close'] = "</li>";
+            $config['first_tag_open'] = "<li>";
+            $config['first_tagl_close'] = "</li>";
+            $config['last_tag_open'] = "<li>";
+            $config['last_tagl_close'] = "</li>";
+            
+            $this->pagination->initialize($config);
+          // $data['query'] = $this->mdl_region->get('id', $config['per_page'], $this->uri->segment(3));
+            $data['records'] = $this->db->get('m_vaccines', $config['per_page'], $this->uri->segment(3));
+           //$this->load->view('display', $data);
+            $data['module']="vaccines";
+            $data['view_file']="list_vaccines_view";
+            $data['section'] = "Configuration";
+          $data['subtitle'] = "List Vaccines";
+          $data['page_title'] = "Vaccines";
+            echo Modules::run('template/admin', $data);  
+	}
+   
 
-public function index($ID = NULL)
-{
-  $this->data['page_title'] = 'Vaccines';
-  $this->load->model('vaccines_model');
-  $this->data['m_vaccines'] = $this->vaccines_model->get($ID)->result();
-  $this->render('admin/vaccine/list_vaccine_view');
+
+
+function create(){
+	
+            $update_id= $this->uri->segment(3);
+            $data = array();
+            $this->load->model('mdl_vaccines');
+            
+            if (!isset($update_id )){
+                $update_id = $this->input->post('update_id', $id);
+                 $data['mavaccine']  = $this->mdl_vaccines->getVaccine();
+            }
+            
+            if (is_numeric($update_id)){
+                $data = $this->get_data_from_db($update_id);
+                $data['update_id'] = $update_id;
+                $data['mavaccine']  = $this->mdl_vaccines->getVaccine();
+                
+            } else {
+            $data= $this->get_data_from_post();
+            $data['mavaccine']  = $this->mdl_vaccines->getVaccine();
+            }
+          
+          $data['module'] = "vaccines";
+          $data['view_file'] = "create_vaccines_form"; 
+          $data['section'] = "Configuration";
+          $data['subtitle'] = "Add Vaccine";
+          $data['page_title'] = "Vaccines";
+	        
+	echo Modules::run('template/admin', $data);
 }
+            
 
-public function create()
-{
-  $this->data['page_title'] = 'Add Vaccines';
-  $this->load->library('form_validation');
 
-  $this->form_validation->set_rules('Name','Vaccine Name','trim|required');
-  $this->form_validation->set_rules('Doses_required','Doses Required','trim|required');
-  $this->form_validation->set_rules('Wastage_factor','Wastage Factor','trim|required');
-  $this->form_validation->set_rules('Tray_color','Tray Color','trim|required');
-  $this->form_validation->set_rules('Vaccine_designation','Vaccine Designation','trim|required');
-  $this->form_validation->set_rules('Vaccine_formulation','Vaccine Formulation','trim|required');
-  $this->form_validation->set_rules('Mode_administration','Mode of Administration','required');
-  $this->form_validation->set_rules('Vaccine_presentation','Vaccine Presentation','required');
-  $this->form_validation->set_rules('Fridge_compart','Fridge Compartment','required');
-  $this->form_validation->set_rules('Vaccine_pck_vol','Vaccine Packed Volume(cm3/dose)','required');
-  $this->form_validation->set_rules('Diluents_pck_vol','Diluents Packed Volume(cm3/dose)','required');
-  $this->form_validation->set_rules('Vaccine_price_vial','Vaccine Price($USD/Vial)','required');
-  $this->form_validation->set_rules('Vaccine_price_dose','Vaccine Price($USD/Dose)','required');
- 
 
-  if($this->form_validation->run()===FALSE)
-  {
-    $this->data['groups'] = $this->ion_auth->groups()->result();//check
-    $this->load->helper('form');
-    $this->render('admin/vaccine/vaccine_view');
-  }
-  else
-  {
-    
-    
-      $data['Name'] = $this->input->post('Name');
-      $data['Doses_required'] = $this->input->post('Doses_required');
-      $data['Wastage_factor'] = $this->input->post('Wastage_factor');
-      $data['Tray_color'] = $this->input->post('Tray_color');
-      $data['Vaccine_designation'] = $this->input->post('Vaccine_designation');
-      $data['Vaccine_formulation']= $this->input->post('Vaccine_formulation');
-      $data['Mode_administration'] = $this->input->post('Mode_administration');
-      $data['Vaccine_presentation'] = $this->input->post('Vaccine_presentation');
-      $data['Fridge_compart'] = $this->input->post('Fridge_compart');
-      $data['Vaccine_pck_vol'] = $this->input->post('Vaccine_pck_vol');
-      $data['Diluents_pck_vol'] = $this->input->post('Diluents_pck_vol');
-      $data['Vaccine_price_vial'] = $this->input->post('Vaccine_price_vial');
-      $data['Vaccine_price_dose'] = $this->input->post('Vaccine_price_dose');
-    
-    $this->load->model('vaccines_model');
-    $this->vaccines_model->_insert($data);
-    $this->session->set_flashdata('message','Vaccine added successfully');
-    redirect('admin/users','refresh');
-  }
+        function get_data_from_post(){
+            
+            $data['Vaccine_name']=$this->input->post('Vaccine_name', TRUE);
+            $data['Doses_required']=$this->input->post('Doses_required', TRUE);
+            $data['Wastage_factor']=$this->input->post('Wastage_factor', TRUE);
+            $data['Tray_color']=$this->input->post('Tray_color', TRUE);
+            $data['Vaccine_designation']=$this->input->post('Vaccine_designation', TRUE);
+            $data['Vaccine_formulation']=$this->input->post('Vaccine_formulation', TRUE);
+            $data['Mode_administration']=$this->input->post('Mode_administration', TRUE);
+            $data['Vaccine_presentation']=$this->input->post('Vaccine_presentation', TRUE);
+            $data['Fridge_compart']=$this->input->post('Fridge_compart', TRUE);
+            $data['Vaccine_pck_vol']=$this->input->post('Vaccine_pck_vol', TRUE);
+            $data['Diluents_pck_vol']=$this->input->post('Diluents_pck_vol', TRUE);
+            $data['Vaccine_price_vial']=$this->input->post('Vaccine_price_vial', TRUE);
+            $data['Vaccine_price_dose']=$this->input->post('Vaccine_price_dose', TRUE);
+             
+            return $data;
+        }
+
+        function get_data_from_db($update_id){
+               $query = $this->get_where($update_id);
+
+               foreach ($query->result() as $row){
+                   $data['Vaccine_name'] = $row->Vaccine_name;
+                   $data['Doses_required'] = $row->Doses_required;
+                   $data['Wastage_factor'] = $row->Wastage_factor;
+                   $data['Tray_color'] = $row->Tray_color;
+                   $data['Vaccine_designation'] = $row->Vaccine_designation;
+                   $data['Vaccine_formulation'] = $row->Vaccine_formulation;
+                   $data['Mode_administration'] = $row->Mode_administration;
+                   $data['Vaccine_presentation'] = $row->Vaccine_presentation;
+                   $data['Fridge_compart'] = $row->Fridge_compart;
+                   $data['Vaccine_pck_vol'] = $row->Vaccine_pck_vol;
+                   $data['Diluents_pck_vol'] = $row->Diluents_pck_vol;
+                   $data['Vaccine_price_vial'] = $row->Vaccine_price_vial;
+                   $data['Vaccine_price_dose'] = $row->Vaccine_price_dose;
+
+
+               }
+            return $data;
+        }
+
+          function submit (){
+            
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('Vaccine_name', 'Vaccine Name', 'required|xss_clean');
+        $this->form_validation->set_rules('Doses_required', 'Doses Required', 'required|xss_clean');
+        $this->form_validation->set_rules('Wastage_factor', 'Wastage Factor', 'required|xss_clean');
+        $this->form_validation->set_rules('Tray_color', 'Tray Color', 'required|xss_clean');
+	    $this->form_validation->set_rules('Vaccine_designation','Vaccine Designation','required|xss_clean');
+	    $this->form_validation->set_rules('Vaccine_formulation','Vaccine Formulation','required|xss_clean');
+	    $this->form_validation->set_rules('Mode_administration','Mode of Administration','required|xss_clean');
+	    $this->form_validation->set_rules('Vaccine_presentation','Vaccine Presentation','required|xss_clean');
+	    $this->form_validation->set_rules('Fridge_compart','Fridge Compartment','required|xss_clean');
+	    $this->form_validation->set_rules('Vaccine_pck_vol','Vaccine Packed Volume(cm3/dose)','required|xss_clean');
+	    $this->form_validation->set_rules('Diluents_pck_vol','Diluents Packed Volume(cm3/dose)','required|xss_clean');
+	    $this->form_validation->set_rules('Vaccine_price_vial','Vaccine Price($USD/Vial)','required|xss_clean');
+	    $this->form_validation->set_rules('Vaccine_price_dose','Vaccine Price($USD/Dose)','required|xss_clean');
+                        
+        $update_id = $this->input->post('update_id', TRUE);
+        if ($this->form_validation->run() == FALSE)
+        {   
+                    $this->create();         
+        }
+        else
+        {       
+                   $data =  $this->get_data_from_post();
+                   
+                   if(is_numeric($update_id)){
+                       $this->_update($update_id, $data);
+                       $this->session->set_flashdata('msg', '<div id="alert-message" class="alert alert-success text-center">Vaccine details updated successfully!</div>');
+            
+                   } else {
+                       $this->_insert($data);
+                       $this->session->set_flashdata('msg', '<div id="alert-message" class="alert alert-success text-center">New Vaccine added successfully!</div>');
+                   }
+                   
+                   //$this->session->set_flashdata('success', 'region added successfully.');
+                   redirect('vaccines');
+        }
+        }
+
+
+function delete($id){
+$this->_delete($id);
+$this->session->set_flashdata('msg', '<div id="alert-message" class="alert alert-success text-center">Vaccine details deleted successfully!</div>');
+redirect('vaccines');
 }
-
-public function edit($ID = NULL)
-{
-  $ID = $this->input->post('ID') ? $this->input->post('ID') : $ID;
-  $this->data['page_title'] = 'Edit Vaccines';
-  $this->load->library('form_validation');
-       
-  $this->form_validation->set_rules('Name','Vaccine Name','trim|required');
-  $this->form_validation->set_rules('Doses_required','Doses Required','trim|required');
-  $this->form_validation->set_rules('Wastage_factor','Wastage Factor','trim|required');
-  $this->form_validation->set_rules('Tray_color','Tray Color','trim|required');
-  $this->form_validation->set_rules('Vaccine_designation','Vaccine Designation','trim|required');
-  $this->form_validation->set_rules('Vaccine_formulation','Vaccine Formulation','trim|required');
-  $this->form_validation->set_rules('Mode_administration','Mode of Administration','required');
-  $this->form_validation->set_rules('Vaccine_presentation','Vaccine Presentation','required');
-  $this->form_validation->set_rules('Fridge_compart','Fridge Compartment','required');
-  $this->form_validation->set_rules('Vaccine_pck_vol','Vaccine Packed Volume(cm3/dose)','required');
-  $this->form_validation->set_rules('Diluents_pck_vol','Diluents Packed Volume(cm3/dose)','required');
-  $this->form_validation->set_rules('Vaccine_price_vial','Vaccine Price($USD/Vial)','required');
-  $this->form_validation->set_rules('Vaccine_price_dose','Vaccine Price($USD/Dose)','required');
-  $this->form_validation->set_rules('ID','Vaccine ID','trim|integer|required');
-
-  if($this->form_validation->run() === FALSE)
-  {
-    if($vaccine = $this->ion_auth->vaccine((int) $ID)->row())//check
-    {
-      $this->data['vaccine'] = $vaccine;
-    }
-    else
-    {
-      $this->session->set_flashdata('message', 'The vaccine doesn\'t exist.');
-      redirect('admin/vaccines', 'refresh');
-    }
-    $this->load->helper('form');
-    $this->render('admin/vaccine/edit_vaccine_view');
-  }
-  else
-  {
-     $data['Name'] = $this->input->post('Name');
-      $data['Doses_required'] = $this->input->post('Doses_required');
-      $data['Wastage_factor'] = $this->input->post('Wastage_factor');
-      $data['Tray_color'] = $this->input->post('Tray_color');
-      $data['Vaccine_designation'] = $this->input->post('Vaccine_designation');
-      $data['Vaccine_formulation']= $this->input->post('Vaccine_formulation');
-      $data['Mode_administration'] = $this->input->post('Mode_administration');
-      $data['Vaccine_presentation'] = $this->input->post('Vaccine_presentation');
-      $data['Fridge_compart'] = $this->input->post('Fridge_compart');
-      $data['Vaccine_pck_vol'] = $this->input->post('Vaccine_pck_vol');
-      $data['Diluents_pck_vol'] = $this->input->post('Diluents_pck_vol');
-      $data['Vaccine_price_vial'] = $this->input->post('Vaccine_price_vial');
-      $data['Vaccine_price_dose'] = $this->input->post('Vaccine_price_dose');
-      $data['ID'] = $this->input->post('ID');
-    
-    $this->load->model('vaccines_model');
-    $this->vaccines_model->_update($ID, $data);
-    $this->session->set_flashdata('message',$this->ion_auth->messages());//check
-    redirect('admin/vaccines','refresh');
-  }
-}
-
- public function delete($ID = NULL)
-{
-  if(is_null($ID))
-  {
-    $this->session->set_flashdata('message','There\'s no user to delete');
-  }
-  else
-  {
-    $this->load->model('vaccines_model');
-    $this->vaccines_model->_delete($ID);
-    $this->session->set_flashdata('message',$this->ion_auth->messages());//check
-  }
-  redirect('admin/vaccines','refresh');
-}
-
-
-
-
+  
+/*function getVaccine(){
+$this->load->model('mdl_vaccines');
+$query = $this->mdl_vaccines->getVaccine();
+return $query;
+}*/
 
 function get($order_by){
 $this->load->model('mdl_vaccines');

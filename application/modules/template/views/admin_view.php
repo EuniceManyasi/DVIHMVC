@@ -40,13 +40,13 @@
             </ul>
           </div>
         </div>
-        <div class="user_admin dropdown"> <a href="javascript:void(0);" data-toggle="dropdown"><span class="user_adminname">John Doe</span> <img src="<?php echo base_url() ?>assets/images/user.png" /> <b class="caret"></b> </a>
+        <div class="user_admin dropdown"> <a href="javascript:void(0);" data-toggle="dropdown"><span class="user_adminname"><?php echo '<b>'.$this->session->userdata('user_fname').'</b>' ;?></span> <img src="<?php echo base_url() ?>assets/images/user.jpg" /> <b class="caret"></b> </a>
           <ul class="dropdown-menu">
             <div class="top_pointer"></div>
             <li> <a href="<?php //echo site_url('admin/user/profile');?>"><i class="fa fa-user"></i> Profile</a> </li>
-            <li> <a href="#"><i class="fa fa-question-circle"></i> Help</a> </li>
-            <li> <a href="#"><i class="fa fa-cog"></i> Setting </a></li>
-            <li> <a href="<?php //echo site_url('admin/user/logout');?>"><i class="fa fa-power-off"></i> Logout</a> </li>
+           <!--  <li> <a href="#"><i class="fa fa-question-circle"></i> Help</a> </li> -->
+            <!-- <li> <a href="#"><i class="fa fa-cog"></i> Setting </a></li> -->
+            <li> <a href="<?php echo site_url('users/logout');?>"><i class="fa fa-power-off"></i> Logout</a> </li>
           </ul>
         </div>
         <!--<a href="javascript:;" class="toggle-menu menu-right push-body jPushMenuBtn rightbar-switch"><i class="fa fa-comment chat"></i></a>-->
@@ -64,79 +64,149 @@
         
       </div>
       <div class="left_nav_slidebar">
+      <?php if ($this->session->userdata('user_group')=='1') {?>
         <ul>
-          <li class="left_nav_active theme_border"><a href="javascript:void(0);"><i class="fa fa-home"></i> HOME <span class="left_nav_pointer"></span> <span class="plus"><i class="fa fa-plus"></i></span> </a>
+            <li class="left_nav_active theme_border"><a href="javascript:void(0);"><i class="fa fa-home"></i> HOME <span class="left_nav_pointer"></span> <span class="plus"><i class="fa fa-plus"></i></span> </a>
             <ul style="display:block">
               <li> <a href="#" class="left_nav_sub_active"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Dashboard</b> </a> </li>
             </ul>
-          </li>
-          
-           <li> <a href="javascript:void(0);"> <i class="fa fa-edit"></i>VACCINES<span class="plus"><i class="fa fa-plus"></i></span></a>
-            <ul>
-              <li> <a href="#" class="left_nav_sub_active"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Place/View Orders</b> </a> </li>
-              <li> <a href="#" class="left_nav_sub_active"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Create/View Transfers</b> </a> </li>
-              <li> <a href="#" class="left_nav_sub_active"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Arrival Tracking</b> </a> </li>
-              <li> <a href="#" class="left_nav_sub_active"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Search History</b> </a> </li>
-            </ul>
-          </li>
-          
-          <li> <a href="javascript:void(0);"> <i class="fa fa-cubes"></i>INVENTORY<span class="plus"><i class="fa fa-plus"></i></span></a>
-            <ul>
-              <li> <a href="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Physical Count</b> </a> </li>
-              <li> <a href="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Aggregate Vaccines</b> </a> </li>
-              <li> <a href="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Scheduled Stocks</b> </a> </li>
-              <li> <a href="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Settings</b> </a> </li>
-            </ul>
-          </li>
-          <li> <a href="javascript:void(0);"> <i class="fa fa-th"></i>COLD CHAIN<span class="plus"><i class="fa fa-plus"></i></span> </a>
+            </li>
+            <li> <a href="javascript:void(0);"> <i class="fa fa-cubes"></i>MANAGE STOCK<span class="plus"><i class="fa fa-plus"></i></span></a>
+                <ul>
+                    <li> <a href="<?php echo site_url('stock/physical_count');?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Physical Count</b> </a> </li>
+                    <li> <a href="<?php echo site_url('stock/vaccine_ledger');?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Vaccines Ledger View</b> </a> </li>
+                    <li> <a href="<?php echo site_url('stock/receive_stock');?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Receive Stocks</b> </a> </li>
+                    <li> <a href="<?php echo site_url('stock/issue_stock');?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Issue Stocks</b> </a> </li>
+                    <li> <a href="<?php echo site_url('stock/transfer_stock');?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Transfer Stocks</b> </a> </li>
+                    <li> <a href="<?php echo site_url("order/list_orders")?>" class="left_nav_sub_active"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Place/View Orders</b> </a> </li>
+                    <li> <a href="#" class="left_nav_sub_active"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Arrival Tracking</b> </a> </li>
+                    <li> <a href="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Settings</b> </a> </li>
+                </ul>
+            </li>
+            <li> <a href="javascript:void(0);"> <i class="fa fa-th"></i>COLD CHAIN<span class="plus"><i class="fa fa-plus"></i></span> </a>
             <ul>
               <li> <a href="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Log Reports</b> </a> </li> 
             </ul>
-          </li>
-          <li> <a href="javascript:void(0);"> <i class="fa fa-bar-chart	"></i>REPORTS<span class="plus"><i class="fa fa-plus"></i></span> </a>
+            </li>
+            <li> <a href="javascript:void(0);"> <i class="fa fa-bar-chart "></i>REPORTS<span class="plus"><i class="fa fa-plus"></i></span> </a>
             <ul>
               <li> <a href="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Report Module</b> </a> </li>
               <li> <a href="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>County Reports</b> </a> </li>
               <li> <a href="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Forecasting</b> </a> </li>
             </ul>
-          </li>
-          <li> <a href="javascript:void(0);"> <i class="fa fa-user-plus"></i>DOCUMENTS<span class="plus"><i class="fa fa-plus"></i></span> </a>
+            </li>
+            <li> <a href="javascript:void(0);"> <i class="fa fa-user-plus"></i>DOCUMENTS<span class="plus"><i class="fa fa-plus"></i></span> </a>
             <ul>
                   <li> <a href="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i><b>Download Documents</b> </a> </li>
-             </ul>
-          </li>
-         <li> <a href="javascript:void(0);"> <i class="fa fa-gear"></i>CONFIGURATIONS<span class="plus"><i class="fa fa-plus"></i></span> </a>
-            <ul>
-           		<li> <a href="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Add Groups</b> </a> </li>
-              <li> <a href="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i><b>Add Users</b> </a> </li>
-              <li> <a href="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Add Vaccines</b> </a> </li>
-              <li> <a href="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Add Regions</b> </a> </li>
-              <li> <a href="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Add County</b> </a> </li>
-              <li> <a href="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Add Sub-County</b> </a> </li>
-              <li> <a href="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Add Depot</b> </a> </li>
-              <li> <a href="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Add Facilities</b> </a> </li>
-              <li> <a href="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Add Fridges</b> </a> </li>
-			<li> <a href="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Chang Password</b> </a> </li>
-             <li> <a href="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Logout</b> </a> </li>
             </ul>
-          </li>
-           <li> <a href="javascript:void(0);"><img src="<?php echo base_url() ?>assets/images/coat_of_arms.png" width="30" height="30" /><span class="theme_color">&nbsp;&nbsp;<b>DVI KENYA</b></span> 	<span class="plus"><i class="fa fa-plus"></i></span> </a>
+            </li>
+            <li> <a href="javascript:void(0);"> <i class="fa fa-gear"></i>CONFIGURATIONS<span class="plus"><i class="fa fa-plus"></i></span> </a>
             <ul>
-              <li> <a href="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>About</b> </a> </li>
-
+              <li> <a href="<?php echo site_url('group/');?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Add Groups</b> </a> </li>
+              <li> <a href="<?php echo site_url('users/create_user');?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i><b>Add Users</b> </a> </li>
+              <li> <a href="<?php echo site_url('vaccines');?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Add Vaccines</b> </a> </li>
+              <li> <a href="<?php echo site_url('region/');?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Add Regions</b> </a> </li>
+              <li> <a href="<?php echo site_url('county/');?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Add County</b> </a> </li>
+              <li> <a href="<?php echo site_url('subcounty/');?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Add Sub-County</b> </a> </li>
+              <li> <a href="<?php echo site_url('depot');?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Add Depot</b> </a> </li>
+              <li> <a href="<?php echo site_url('facility');?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Add Facilities</b> </a> </li>
+              <li> <a href="<?php echo site_url('fridge');?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Add Fridges</b> </a> </li>
             </ul>
-          </li>
+            </li>
+            <li> <a href="javascript:void(0);"><img src="<?php echo base_url() ?>assets/images/coat_of_arms.png" width="30" height="30" /><span class="theme_color">&nbsp;&nbsp;<b>DVI KENYA</b></span>  <span class="plus"><i class="fa fa-plus"></i></span> </a>
+              <ul>
+                <li> <a href="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>About</b> </a> </li>
+              </ul>
+            </li>
         </ul>
-      </div>
+     <?php }  elseif ($this->session->userdata('user_group')=='2') {?>
+
+         <ul>
+            <li class="left_nav_active theme_border"><a href="javascript:void(0);"><i class="fa fa-home"></i> HOME <span class="left_nav_pointer"></span> <span class="plus"><i class="fa fa-plus"></i></span> </a>
+                <ul style="display:block">
+                  <li> <a href="#" class="left_nav_sub_active"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Dashboard</b> </a> </li>
+                </ul>
+            </li>
+            <li> <a href="javascript:void(0);"> <i class="fa fa-cubes"></i>MANAGE STOCK<span class="plus"><i class="fa fa-plus"></i></span></a>
+                <ul>
+                    <li> <a href="<?php echo site_url('stock/physical_count');?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Physical Count</b> </a> </li>
+                    <li> <a href="<?php echo site_url('stock/vaccine_ledger');?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Vaccines Ledger View</b> </a> </li>
+                    <li> <a href="<?php echo site_url('stock/receive_stock');?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Receive Stocks</b> </a> </li>
+                    <li> <a href="<?php echo site_url('stock/issue_stock');?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Issue Stocks</b> </a> </li>
+                    <li> <a href="<?php echo site_url('stock/transfer_stock');?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Transfer Stocks</b> </a> </li>
+                    <li> <a href="<?php echo site_url("order/list_orders")?>" class="left_nav_sub_active"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Place/View Orders</b> </a> </li>
+                    <li> <a href="#" class="left_nav_sub_active"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Arrival Tracking</b> </a> </li>
+                    <li> <a href="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Settings</b> </a> </li>
+                </ul>
+            </li>
+            <li> <a href="javascript:void(0);"> <i class="fa fa-th"></i>COLD CHAIN<span class="plus"><i class="fa fa-plus"></i></span> </a>
+                <ul>
+                    <li> <a href="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Log Reports</b> </a> </li> 
+                </ul>
+            </li>
+            <li> <a href="javascript:void(0);"> <i class="fa fa-bar-chart "></i>REPORTS<span class="plus"><i class="fa fa-plus"></i></span> </a>
+                <ul>
+                  <li> <a href="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Report Module</b> </a> </li>
+                  <li> <a href="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>County Reports</b> </a> </li>
+                  <li> <a href="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Forecasting</b> </a> </li>
+                </ul>
+            </li>
+            <li> <a href="javascript:void(0);"> <i class="fa fa-user-plus"></i>DOCUMENTS<span class="plus"><i class="fa fa-plus"></i></span> </a>
+                <ul>
+                      <li> <a href="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i><b>Download Documents</b> </a> </li>
+                 </ul>
+            </li>
+            <li> <a href="javascript:void(0);"> <i class="fa fa-gear"></i>CONFIGURATIONS<span class="plus"><i class="fa fa-plus"></i></span> </a>
+                <ul>
+                  <!-- <li> <a href="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Add Groups</b> </a> </li>
+                  <li> <a href="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i><b>Add Users</b> </a> </li>
+                  <li> <a href="<?php echo site_url('vaccines');?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Add Vaccines</b> </a> </li>
+                  <li> <a href="<?php echo site_url('region/create');?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Add Regions</b> </a> </li>
+                  <li> <a href="<?php echo site_url('county/create');?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Add County</b> </a> </li> -->
+                  <li> <a href="<?php echo site_url('subcounty/create');?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Add Sub-County</b> </a> </li>
+                <!--  <li> <a href="<?php echo site_url('depot');?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Add Depot</b> </a> </li> -->
+                  <li> <a href="<?php echo site_url('facility');?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Add Facilities</b> </a> </li>
+                  <li> <a href="<?php echo site_url('fridge');?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Add Fridges</b> </a> </li>
+                </ul>
+            </li>
+            <li> <a href="javascript:void(0);"><img src="<?php echo base_url() ?>assets/images/coat_of_arms.png" width="30" height="30" /><span class="theme_color">&nbsp;&nbsp;<b>DVI KENYA</b></span>  <span class="plus"><i class="fa fa-plus"></i></span> </a>
+              <ul>
+                <li> <a href="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>About</b> </a> </li>
+              </ul>
+            </li>
+        </ul>
+
+       <?php }  else {
+        echo "total failure";
+
+        }?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
     </div>
     <!--\\\\\\\left_nav end \\\\\\-->
     <div class="contentpanel">
       <!--\\\\\\\ contentpanel start\\\\\\-->
       <div class="pull-left breadcrumb_admin clear_both">
         <div class="pull-left page_title theme_color">
-          <h1>blankpage</h1>
-          <h2 class="">Subtitle goes here...</h2>
-        </div>	
+          <h1><?php echo $section?></h1>
+          <h2 class=""><?php echo $subtitle ?></h2>
+        </div>  
       </div>
       <div class="container clear_both padding_fix">
         <!--\\\\\\\ container  start \\\\\\-->
@@ -150,13 +220,13 @@ aria-hidden="true">&times;</span></button>
           <div class="block-web">
          <div class="header">
               <!--<div class="actions"> <a class="minimize" href="#"><i class="fa fa-chevron-down"></i></a><a class="close-down" href="#"><i class="fa fa-times"></i></a> </div>-->
-              <h3 class="content-header">Content Renders In Here</h3>
+              <h3 class="content-header text-info "><?php echo $page_title;?></h3>
             </div>
             <div class="porlets-content">
         <?php 
-		$this->load->view($module.'/'.$view_file);
-		//echo "ghggh";
-		 ?>
+    $this->load->view($module.'/'.$view_file);
+    //echo "ghggh";
+     ?>
     </div><!--/porlets-content--> 
 
  
@@ -179,6 +249,30 @@ aria-hidden="true">&times;</span></button>
 <script src="<?php echo base_url() ?>assets/js/jquery.slimscroll.min.js"></script>
 <script src="<?php echo base_url() ?>assets/js/jPushMenu.js"></script> 
 <!--<script src="js/side-chats.js"></script>-->
+
+
+<script src="<?php echo base_url() ?>assets/js/jquery.sparkline.js"></script>
+<script src="<?php echo base_url() ?>assets/js/sparkline-chart.js"></script>
+<script src="<?php echo base_url() ?>assets/js/graph.js"></script>
+<script src="<?php echo base_url() ?>assets/js/edit-graph.js"></script>
+
+
+<script src="<?php echo base_url() ?>assets/plugins/sparkline/jquery.sparkline.js" type="text/javascript"></script>
+<script src="<?php echo base_url() ?>assets/plugins/sparkline/jquery.customSelect.min.js" ></script> 
+<script src="<?php echo base_url() ?>assets/plugins/sparkline/sparkline-chart.js"></script> 
+<script src="<?php echo base_url() ?>assets/<?php echo base_url() ?>assets/plugins/sparkline/easy-pie-chart.js"></script>
+<script src="<?php echo base_url() ?>assets/plugins/morris/morris.min.js" type="text/javascript"></script> 
+<script src="<?php echo base_url() ?>assets/plugins/morris/raphael-min.js" type="text/javascript"></script>  
+<script src="<?php echo base_url() ?>assets/plugins/morris/morris-script.js"></script> 
+
+
+
+
+
+<script src="<?php echo base_url() ?>assets/plugins/demo-slider/demo-slider.js"></script>
+<script src="<?php echo base_url() ?>assets/plugins/knob/jquery.knob.min.js"></script> 
+
+
 
 </body>
 </html>

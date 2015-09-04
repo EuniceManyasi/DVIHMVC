@@ -12,8 +12,13 @@ function get_table() {
     return $table;
 }
 
-
-
+function getVaccine(){
+		
+		$this->db->select('Vaccine_name, ID');
+        $query = $this->db->get('m_vaccines');
+        return $query->result_array();
+    }
+    
 
 function get($order_by){
 $table = $this->get_table();

@@ -827,7 +827,7 @@ h5{padding:10px;}
 .login_page{ width:100%; position:absolute;}
 .login_content {margin: 0 auto; padding: 20px 0;position: relative;text-align: center; transition: all 550ms ease-in-out 0s;width: 320px; margin-top:185px; border:2px solid #cccccc; border-radius:5px; padding:20px;background-color: #FFFFFF;}
 .col-sm-10 { width: 100.333%;}
-.login_heading{background-color:#5DCFF3; color:#FFFFFF; margin-bottom:20px; font-size:20px; text-transform:uppercase;}
+.login_heading{background-color:#D2322D; color:#FFFFFF; margin-bottom:20px; font-size:20px; text-transform:uppercase;}
 .lable_margin{margin-top:8px; float:left;}
 .form-control { font-size: 12px;line-height: 1.42857;background:#FFFFFF;height: 30px; border-radius:0px;  box-shadow:none;}
 	
