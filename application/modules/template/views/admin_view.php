@@ -10,6 +10,11 @@
 <link href="<?php echo base_url() ?>assets/css/animate.css" rel="stylesheet" type="text/css" />
 <link href="<?php echo base_url() ?>assets/css/admin.css" rel="stylesheet" type="text/css" />
 
+
+<script src="<?php echo base_url();?>assets/js/jquery-ui.min.js"></script>
+
+<link rel="stylesheet" href="<?php echo base_url();?>assets/css/jquery-ui.css">
+
 </head>
 <body class="light_theme  fixed_header left_nav_fixed">
 <div class="wrapper">
@@ -133,10 +138,10 @@
                     <li> <a href="<?php echo site_url('stock/vaccine_ledger');?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Vaccines Ledger View</b> </a> </li>
                     <li> <a href="<?php echo site_url('stock/receive_stock');?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Receive Stocks</b> </a> </li>
                     <li> <a href="<?php echo site_url('stock/issue_stock');?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Issue Stocks</b> </a> </li>
-                    <li> <a href="<?php echo site_url('stock/transfer_stock');?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Transfer Stocks</b> </a> </li>
+                    <!-- <li> <a href="<?php echo site_url('stock/transfer_stock');?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Transfer Stocks</b> </a> </li> -->
                     <li> <a href="<?php echo site_url("order/list_orders")?>" class="left_nav_sub_active"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Place/View Orders</b> </a> </li>
-                    <li> <a href="#" class="left_nav_sub_active"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Arrival Tracking</b> </a> </li>
-                    <li> <a href="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Settings</b> </a> </li>
+                    <!-- <li> <a href="#" class="left_nav_sub_active"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Arrival Tracking</b> </a> </li> -->
+                    <!-- <li> <a href="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Settings</b> </a> </li> -->
                 </ul>
             </li>
             <li> <a href="javascript:void(0);"> <i class="fa fa-th"></i>COLD CHAIN<span class="plus"><i class="fa fa-plus"></i></span> </a>
@@ -217,7 +222,7 @@
       <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
 aria-hidden="true">&times;</span></button>
     </div>-->
-          <div class="block-web">
+          <div class="block-web" data-effect="bounceInRight" >
          <div class="header">
               <!--<div class="actions"> <a class="minimize" href="#"><i class="fa fa-chevron-down"></i></a><a class="close-down" href="#"><i class="fa fa-times"></i></a> </div>-->
               <h3 class="content-header text-info "><?php echo $page_title;?></h3>

@@ -31,22 +31,10 @@ parent::__construct();
 		
 		$this->pagination->initialize($config);
 		
-		$region_id  = $this->input->post('region_id', TRUE);
-		if (!isset($region_id)){
-			$data['records'] = $this->db->get('m_facility', $config['per_page'], $this->uri->segment(3));
-		}else{
-			$region = $this->uri->segment(4);
-			$array 	= $this->uri->uri_to_assoc();
-			
-		}
 		$data['records'] = $this->db->get('m_facility', $config['per_page'], $this->uri->segment(3));
-		//$data['records'] = $this->db->get('m_region');
-		$this->load->model('mdl_facility');
-		//$data['records'] = $this->get_all('Nairobi');
-		//var_dump($data['records']);
 		$data['section'] = "Configuration";
-        $data['subtitle'] = "Facilities";
-        $data['page_title'] = "Facilities ";
+        $data['subtitle'] = "facility";
+        $data['page_title'] = "List facilities";
 		$data['module']="facility";
 		$data['view_file']="list_facility_view";
 		echo Modules::run('template/admin', $data);			
@@ -60,36 +48,52 @@ parent::__construct();
             $data = array();
             $this->load->model('mdl_facility');
             
+
+            
+
 		if (!isset($update_id )){
 			$update_id = $this->input->post('update_id', $id);
 			$data['region']  = $this->mdl_facility->getRegion();
 			$data['county']  = $this->mdl_facility->getCounty();
 			$data['subcounty']  = $this->mdl_facility->getSubcounty();
-			
+			$data['fridge'] = $this->getRefrigerator();
 		}
-            
+			
 		if (is_numeric($update_id)){
 			$data = $this->get_data_from_db($update_id);
 			$data['update_id'] = $update_id;
 			$data['region']  = $this->mdl_facility->getRegion();
 			$data['county']  = $this->mdl_facility->getCounty();
 			$data['subcounty']  = $this->mdl_facility->getSubcounty();
+			$data['fridge'] = $this->getRefrigerator();
 		} else {
 			$data= $this->get_data_from_post();
 			$data['region']  = $this->mdl_facility->getRegion();
 			$data['county']  = $this->mdl_facility->getCounty();
 			$data['subcounty']  = $this->mdl_facility->getSubcounty();
+			$data['fridge'] = $this->getRefrigerator();
 			
 		}
-            
-        $data['section'] = "Vaccines";
-        $data['subtitle'] = "Facilities";
-        $data['page_title'] = "Add Facility";
+        
+        $data['section'] = "Configuration";
+        $data['subtitle'] = "facilities";
+        $data['page_title'] = "Add facility";    
 		$data['module'] = "facility";
 		$data['view_file'] = "create_facility_form";
 		echo Modules::run('template/admin', $data);
 	}
 
+	function getRefrigerator(){
+		$this->load->model('fridges/mdl_fridges');
+		$query = $this->mdl_fridges->getRefrigerator();
+		//var_dump($query);
+		/*foreach ($query->result() as $row){
+			$data['Model']= $row->Model;
+			$data['Manufacturer']= $row->Manufacturer;
+		}
+		return $data;*/
+		return $query;
+	}
 	function delete($id){
 		$this->_delete($id);
 		$this->session->set_flashdata('msg', '<div id="alert-message" class="alert alert-success text-center">Facility deleted successfully!</div>');
@@ -97,10 +101,7 @@ parent::__construct();
 	}		
 	function get_data_from_db($update_id){
 		$query = $this->get_where($update_id);
-		// $region_query = $this->get_region();
-		// foreach ($region_query->result() as $row){
-		  // $data['region_query'] = $row->region_name;
-		// }
+
 		foreach ($query->result() as $row){
 		  $data['facility_name'] = $row->facility_name;
 		  $data['type'] = $row->type;
@@ -113,10 +114,10 @@ parent::__construct();
 		  $data['nearest_town'] = $row->nearest_town;
 		  $data['nearest_town_distance'] = $row->nearest_town_distance;
 		  $data['nearest_depot_distance'] = $row->nearest_depot_distance;
-		  $data['wcba_pop'] = $row->wcba_pop;
-		  $data['pop'] = $row->pop;
-		  $data['pop_under_one'] = $row->pop_under_one;
-		  $data['fridge'] = $row->fridge;
+		  $data['wcba_population'] = $row->wcba_population;
+		  $data['catchment_population'] = $row->catchment_population;
+		  $data['catchment_population_under_one'] = $row->catchment_population_under_one;
+		  $data['refrigerator'] = $row->refrigerator;
 		  $data['cold_box'] = $row->cold_box;
 		  $data['vaccine_carrier'] = $row->vaccine_carrier;
 		  $data['status'] = $row->status;
@@ -135,10 +136,10 @@ parent::__construct();
 		$data['nearest_town'] 	= $this->input->post('nearest_town', TRUE);
 		$data['nearest_town_distance'] 	= $this->input->post('nearest_town_distance', TRUE);
 		$data['nearest_depot_distance'] = $this->input->post('nearest_depot_distance', TRUE);
-		$data['wcba_pop'] 				= $this->input->post('wcba_pop', TRUE);
-		$data['pop'] 					= $this->input->post('pop', TRUE);
-		$data['pop_under_one'] 			= $this->input->post('pop_under_one', TRUE);		
-		$data['fridge']					= $this->input->post('fridge', TRUE);
+		$data['wcba_population'] 		= $this->input->post('wcba_population', TRUE);
+		$data['catchment_population'] 	= $this->input->post('catchment_population', TRUE);
+		$data['catchment_population_under_one'] = $this->input->post('catchment_population_under_one', TRUE);		
+		$data['refrigerator']			= $this->input->post('refrigerator', TRUE);
 		$data['cold_box'] 				= $this->input->post('cold_box', TRUE);
 		$data['vaccine_carrier']		= $this->input->post('vaccine_carrier', TRUE);
 		$data['status'] 				= $this->input->post('status', TRUE);
@@ -150,7 +151,7 @@ parent::__construct();
 		$this->form_validation->set_rules('region_id','Region','trim|required');
 		$this->form_validation->set_rules('county_id','County','trim|required');
 		$this->form_validation->set_rules('subcounty_id','Sub-county','trim|required');
-		$this->form_validation->set_rules('fridge','Fridge','trim|required');
+		$this->form_validation->set_rules('refrigerator','refrigerator','trim|required');
 		$this->form_validation->set_rules('status','Status','trim|required');
 		
 		
@@ -158,7 +159,7 @@ parent::__construct();
 		if ($this->form_validation->run() === FALSE)
 		{	
 			$this->create(); 
-			redirect('fridge/');
+			redirect('facility/');
 		}
 		else
 		{		
@@ -174,7 +175,7 @@ parent::__construct();
                    }
                    
                    $this->session->set_flashdata('success', 'Facility added successfully.');
-                   redirect('fridge/');
+                   redirect('facility/');
 		}
 	}
 	

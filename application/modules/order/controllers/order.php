@@ -41,9 +41,9 @@ public function list_orders(){
   echo Modules::run('template/admin', $data);
 	
 }
-public function view_orders(){
+public function view_orders($order_id){
   $this->load->model('order/mdl_order');
-  $data['orderitems']= $this->mdl_order->get_orderitems();
+  $data['orderitems']= $this->mdl_order->get_orderitems($order_id);
   $this -> prepare_orders($data);
   
 }

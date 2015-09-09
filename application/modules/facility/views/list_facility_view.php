@@ -51,9 +51,9 @@
                                         <td><?php echo $row->ward ?></td>
                                         <td><?php echo $row->nearest_town ?></td>
                                         <td><?php echo $row->nearest_town_distance ?></td>
-                                        <td><?php echo $row->nearest_depot_distance ?></td>
-                                        <td><?php echo $row->wcba_pop ?></td>
-                                        <td><?php echo $row->fridge ?></td>
+                                        <td><?php echo $row->nearest_depot_distance ?></td>                                       
+                                        <td><?php echo $row->refrigerator ?></td>
+                                        <td><?php echo $row->wcba_population ?></td>
                                         <td><?php echo $row->cold_box ?></td>
                                         <td><?php echo $row->vaccine_carrier ?></td>
                                         <td><?php echo $row->status ?></td>

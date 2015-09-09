@@ -1,25 +1,31 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 
-class Mdl_Order extends CI_Model {
+class Mdl_fridges extends CI_Model {
 
 function __construct() {
 parent::__construct();
 }
 
 function get_table() {
-    $table = "tablename";
-    return $table;
+$table = "m_fridges";
+return $table;
 }
-function get_orders(){
-	$query = $this->db->get('order');
-	return $query->result_array();
+
+function getRefrigerator(){
+$this->db->select("id, Model, Manufacturer");
+$this->db->from("m_fridges");
+$query = $this->db->get();
+return $query->result();
 }
-function get_orderitems($order_id){
-	$query = $this->db->get_where('order_item', array('order_id' => $order_id));
-/*	$query = $this->db->get('order_item');*/
-	
-	return $query->result_array();
+
+function get_all($id){
+$this->db->select('*');
+$this->db->from('m_facility');
+$this->db->where('region_id', $id);
+$this->db->join('m_region', 'm_region.region_name = m_facility.region_id');
+$query = $this->db->get();
+return $query->result_array();
 }
 
 
@@ -28,6 +34,14 @@ $table = $this->get_table();
 $this->db->order_by($order_by);
 $query=$this->db->get($table);
 return $query;
+}
+
+function getn($order_by){
+$table = $this->get_table();
+$this->db->order_by($order_by);
+$query=$this->db->get($table);
+$num_rows = $query->num_rows();
+return $num_rows;
 }
 
 function get_with_limit($limit, $offset, $order_by) {

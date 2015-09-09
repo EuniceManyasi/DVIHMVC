@@ -1,92 +1,8 @@
-<?php
-$form_attributes = array('id' => 'issuestock_fm','method' =>'post');
-echo form_open('',$form_attributes);?>
-<table  class="table table-hover ">
-
-<div class="well well-sm"><h4>Transaction Details</h4></div>
-	<thead>
-		                  <th class="small" align="center">Issue To</th>
-							<th class="small">Date Issued</th>
-							<th  class="small">S11 #</th>
-
-							<th></th>
-
-	</thead>
-	<tbody>
-		<tr>
-			<td><?php $data=array('name' => 'issued_to','id'=> 'issued_to','class'=>'issued_to'); echo form_input($data);?></td>
-             		<td><?php $data=array('name' => 'date_issued','id'=>'date_issued','class'=>'date_issued'); echo form_input($data);?></td>
-             		<td><?php $data=array('name' => 'date_issued','id'=>'date_issued','class'=>'date_issued'); echo form_input($data);?></td>
-             		<input type="hidden" name ="transaction_type" class="transaction_type" value="2">
-		</tr>
-	</tbody>
-</table>
-<table>
-	
-</table>
-<hr></hr><hr></hr>
-<div id="stock_issue">
-	 <div class="well well-sm"><h4>Vaccine Details</h4></div>
-	<table class="table table-bordered table-hover table-striped"  >
-		<thead>
-
-			                <th style="width:17%;" class="small" align="center">Vaccine/Diluents</th>
-							<th style="width:14%;" class="small">Batch No.</th>
-							<th style="width:14%;" class="small">Expiry&nbsp;Date</th>
-							<th style="width:12%;" class="small">Amount Ordered</th>
-							<th style="width:12%;" class="small">Available quantity</th>
-							<th style="width:12%;" class="small">Amount Issued</th>
-							<th style="width:12%;" class="small">VVM Status</th>
-							<th style="width:14%" class="small">Action</th>
-		</thead>
-		<tbody>
-
-			<tr align="center" issue_row="1">
-			
-			<td> <select name="vaccine" class="col-xs-11 vaccine" id="vaccine">
-                 <option value="">--Select One--</option>
-                 <?php foreach ($vaccines as $vaccine) { 
-                     echo "<option value='".$vaccine['ID']."'>".$vaccine['Vaccine_name']."</option>";
-                     }?>
-                </select></td>
-                <td> <select name="batch_no" class="col-xs-12 batch_no" id="batch_no">
-                
-                </select></td>
-                <style type="text/css">
-
-                input[id="available_quantity"]{
-                 background-color: #E0F2F7 !important
-                 }</style>
-             		
-             		<td><?php $data=array('name' => 'expiry_date','id'=> 'expiry_date','class'=>'col-xs-12 expiry_date','readonly'=>''); echo form_input($data);?></td>
-             		<td><?php $data=array('name' => 'amt_ordered','id'=> 'amt_ordered','class'=>'col-xs-12 amt_ordered'); echo form_input($data);?></td>
-             		<td><?php $data=array('name' => 'available_quantity','id'=> 'available_quantity','class'=>'col-xs-12 available_quantity','readonly'=>''); echo form_input($data);?></td>
-             		<td><?php $data=array('name' => 'amt_issued','id'=> 'amt_issued','class'=>'col-xs-12 amt_issued'); echo form_input($data);?></td>
-                    <td><?php $data=array('name' => 'vvm_status','id'=> 'vvm_status','class'=>'col-xs-11 vvm_s','readonly'=>''); echo form_input($data);?></td>
-             	
-             		<td class="col-xs-9 small "><a href="#" class="add"> Add </a><span class="divider"> | </span><a href="#" class="remove">Remove</a></td>
-
-			</tr>
-
-		</tbody>
-	</table>
-
-
-</div>
-<input type="submit" name="stock_issue_fm" id="stock_issue_fm" value="Issue Stock">
-<?php
-
-   echo form_close();?>
-
-
-
-   <script type="text/javascript">
-
- 
+  
 // Add another row in the form on click add
 
-           $(document).on( 'click','#stock_issue .add', function () {
-
+           $('#stock_issue').delegate( '.add', 'click', function () {
+           	
              var thisRow =$('#stock_issue tr:last');
               var cloned_object = $( thisRow ).clone();
 
@@ -183,11 +99,9 @@ echo form_open('',$form_attributes);?>
 		   // e.unbind(); //unbind. to stop multiple form submit.
            });
 
-		$(document).on( 'change','.vaccine', function () {
+		$("#vaccine").change(function(){
 			var stock_row=$(this);
-		 /*  var selected_vaccine=$(this).val();*/
-		   var selected_vaccine=stock_row.val();
-		   // alert(selected_vaccine);
+		   var selected_vaccine=$(this).val();
 		   load_batches(selected_vaccine,stock_row);
 		});
 
@@ -222,8 +136,7 @@ echo form_open('',$form_attributes);?>
 				});
 		}
 		
-		
-			$(document).on( 'change','.batch_no', function () {
+		$(".batch_no").change(function(){
 			var stock_row=$(this);
 		   var selected_batch=$(this).val();
 		   batch_details(selected_batch,stock_row);
@@ -248,6 +161,9 @@ echo form_open('',$form_attributes);?>
 			    		stock_row.closest("tr").find(".expiry_date").val(value.expiry_date);
 			    		stock_row.closest("tr").find(".available_quantity").val(value.stock_balance);
 			    		stock_row.closest("tr").find(".vvm_s").val(value.name);
+
+			    		
+			    		/*value[0].batch_number;*/
 			    		
 			    	});
 			    });
@@ -285,6 +201,3 @@ echo form_open('',$form_attributes);?>
 				}
 
 
-
-
-   </script>
